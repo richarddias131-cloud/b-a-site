@@ -90,6 +90,7 @@
   initSegments();
   initProcess();
   initWorks();
+  initFinalCta();
 
   /* =========================================================
      Header: fundo aparece depois de rolar
@@ -99,7 +100,8 @@
     if (!header) return;
     const update = (y) => header.classList.toggle('is-scrolled', y > 40);
     if (lenisInstance) lenisInstance.on('scroll', ({ scroll }) => update(scroll));
-    else window.addEventListener('scroll', () => update(window.scrollY), { passive: true });
+    // Rolagem nativa também (saltos por âncora, restauração de posição ao recarregar)
+    window.addEventListener('scroll', () => update(window.scrollY), { passive: true });
     update(window.scrollY);
   }
 
@@ -763,6 +765,26 @@
     gsap.from('.works__head > *', {
       y: 50, opacity: 0, duration: 1.1, stagger: 0.08, ease: 'expo.out',
       scrollTrigger: { trigger: '.works__head', start: 'top 80%', once: true },
+    });
+  }
+
+  /* =========================================================
+     07 · CTA FINAL
+     O halo pulsante só anima enquanto a seção está visível
+     (.is-live), para não gastar nada no resto da página.
+     ========================================================= */
+  function initFinalCta() {
+    const sec = document.querySelector('.cta-final');
+    if (!sec || reduceMotion) return;
+    ScrollTrigger.create({
+      trigger: sec,
+      start: 'top 90%',
+      end: 'bottom 10%',
+      onToggle: (self) => sec.classList.toggle('is-live', self.isActive),
+    });
+    gsap.from('.cta-final__inner > *', {
+      y: 50, opacity: 0, duration: 1.1, stagger: 0.07, ease: 'expo.out',
+      scrollTrigger: { trigger: sec, start: 'top 70%', once: true },
     });
   }
 })();
