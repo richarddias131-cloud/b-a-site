@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Saira:ital,wght@1,900&family=Saira+Condensed:wght@500;700;800;900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css?v=7">
+  <link rel="stylesheet" href="css/style.css?v=8">
 
   <!-- Liga as animações de entrada só quando o JS roda e o usuário não pediu movimento reduzido.
        Se algo falhar, o conteúdo reaparece sozinho após 4s. -->
@@ -319,7 +319,7 @@
           <span>Do cartão</span>
           <span class="is-outline">à fachada.</span>
         </h2>
-        <p class="svcs__lead">Oito frentes, um padrão de acabamento. Escolha por onde a sua marca vai aparecer.</p>
+        <p class="svcs__lead">Nove frentes, um padrão de acabamento. Escolha por onde a sua marca vai aparecer.</p>
       </header>
 
       <div class="svc" data-svc>
@@ -491,6 +491,28 @@
           </div>
         </article>
 
+        <article class="svc__item" style="--c: var(--yellow)">
+          <button class="svc__tab" aria-expanded="false" aria-controls="svc-9" id="svc-tab-9">
+            <span class="svc__num">09</span><span class="svc__label">Envelopamento</span><i class="svc__plus" aria-hidden="true"></i>
+          </button>
+          <div class="svc__panel" id="svc-9" role="region" aria-labelledby="svc-tab-9">
+            <div class="svc__inner">
+              <div class="svc__copy">
+                <span class="svc__big" aria-hidden="true">09</span>
+                <h3 class="svc__name">Envelopamento</h3>
+                <p class="svc__desc">Freezer, geladeira ou eletrodoméstico com cara nova, sem trocar o equipamento. Adesivo impresso com a sua marca ou acabamento silver que imita inox.</p>
+                <ul class="svc__tags"><li>Adesivo impresso</li><li>Silver super brilho</li><li>Freezers e geladeiras</li></ul>
+                <a class="svc__cta" data-wa data-wa-msg="Olá, B&A Sign! Quero um orçamento de envelopamento." href="https://wa.me/5535992451801" target="_blank" rel="noopener">Orçar envelopamento <i aria-hidden="true">→</i></a>
+              </div>
+              <div class="svc__art art-wrap" aria-hidden="true">
+                <span class="art-wrap__fridge"></span>
+                <span class="art-wrap__film"><b>Sua marca</b></span>
+                <span class="art-wrap__curl"></span>
+              </div>
+            </div>
+          </div>
+        </article>
+
       </div>
     </section>
 
@@ -622,6 +644,8 @@
       </header>
 
       <div class="works">
+        <!-- Desktop: 3 colunas desencontradas. Celular: uma coluna, na ordem do HTML. -->
+        <div class="works__col">
 
         <!-- P/01 · Vitrine -->
         <figure class="work work--vit" data-work>
@@ -662,7 +686,26 @@
           </figcaption>
         </figure>
 
-        <!-- P/03 · Geladeira (antes e depois) -->
+        <!-- P/03 · Cardápio -->
+        <figure class="work" data-work>
+          <div class="work__media" style="aspect-ratio: 702 / 900">
+            <img src="assets/portfolio/cardapio-migas.jpg" width="702" height="900" loading="lazy" decoding="async"
+                 alt="Cardápio aberto da Migas Confeitaria com fotos e preços dos bolos caseirinhos, encadernado em espiral">
+            <span class="work__sweep" aria-hidden="true"></span>
+            <span class="work__slats" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          </div>
+          <figcaption class="work__cap">
+            <span class="work__n">P/03</span>
+            <span class="work__cat">Cardápio · Encadernação em espiral</span>
+            <h3 class="work__name">Migas Confeitaria</h3>
+            <p class="work__desc">Cardápio com foto de cada produto, preço em destaque e contato para encomenda em todas as páginas.</p>
+          </figcaption>
+        </figure>
+
+        </div>
+        <div class="works__col">
+
+        <!-- P/04 · Geladeira (antes e depois) -->
         <figure class="work work--gl" data-work>
           <div class="work__media cmp" data-cmp style="aspect-ratio: 435 / 892">
             <img class="cmp__before" src="assets/portfolio/geladeira-antes.jpg" width="435" height="892" loading="lazy" decoding="async"
@@ -678,14 +721,14 @@
             <span class="work__slats" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
           </div>
           <figcaption class="work__cap">
-            <span class="work__n">P/03</span>
+            <span class="work__n">P/04</span>
             <span class="work__cat">Envelopamento · Adesivo silver</span>
             <h3 class="work__name">Geladeira renovada</h3>
             <p class="work__desc">Adesivo silver super brilho: cara de inox sem trocar o eletrodoméstico.</p>
           </figcaption>
         </figure>
 
-        <!-- P/04 · Cartão de visita -->
+        <!-- P/05 · Cartão de visita -->
         <figure class="work work--card" data-work>
           <div class="work__media" style="aspect-ratio: 1 / 1">
             <img src="assets/portfolio/cartao-gaby-alwim.jpg" width="1000" height="1000" loading="lazy" decoding="async"
@@ -694,12 +737,65 @@
             <span class="work__slats" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
           </div>
           <figcaption class="work__cap">
-            <span class="work__n">P/04</span>
+            <span class="work__n">P/05</span>
             <span class="work__cat">Cartão de visita</span>
             <h3 class="work__name">Gaby Alwim Fotografia</h3>
             <p class="work__desc">Fundo em foto, assinatura em lettering e impressão nítida no papel.</p>
           </figcaption>
         </figure>
+
+        </div>
+        <div class="works__col">
+
+        <!-- P/06 · Display de mesa com Pix -->
+        <figure class="work" data-work>
+          <div class="work__media" style="aspect-ratio: 754 / 1000">
+            <img src="assets/portfolio/display-pix-barbearia.jpg" width="754" height="1000" loading="lazy" decoding="async"
+                 alt="Display de mesa de uma barbearia com a arte Pague com Pix e espaço para o QR Code (QR Code e chave ocultados)">
+            <span class="work__sweep" aria-hidden="true"></span>
+            <span class="work__slats" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          </div>
+          <figcaption class="work__cap">
+            <span class="work__n">P/06</span>
+            <span class="work__cat">Display de mesa · QR Code Pix</span>
+            <h3 class="work__name">Barbearia</h3>
+            <p class="work__desc">O cliente escaneia e paga ali mesmo, com a identidade da casa em volta do QR Code.</p>
+          </figcaption>
+        </figure>
+
+        <!-- P/07 · Cavalete -->
+        <figure class="work" data-work>
+          <div class="work__media" style="aspect-ratio: 634 / 1000">
+            <img src="assets/portfolio/cavalete-agro-extrema.jpg" width="634" height="1000" loading="lazy" decoding="async"
+                 alt="Cavalete de calçada com lona impressa da Agro Extrema Pet Shop anunciando banho e tosa">
+            <span class="work__sweep" aria-hidden="true"></span>
+            <span class="work__slats" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          </div>
+          <figcaption class="work__cap">
+            <span class="work__n">P/07</span>
+            <span class="work__cat">Lona impressa · Cavalete</span>
+            <h3 class="work__name">Agro Extrema Pet Shop</h3>
+            <p class="work__desc">Banho e tosa anunciados na calçada, com cor forte para ser visto por quem passa de carro.</p>
+          </figcaption>
+        </figure>
+
+        <!-- P/08 · Tags de roupa -->
+        <figure class="work" data-work>
+          <div class="work__media" style="aspect-ratio: 1200 / 512">
+            <img src="assets/portfolio/tags-daiane-ribeiro.jpg" width="1200" height="512" loading="lazy" decoding="async"
+                 alt="Tags de roupa da Daiane Ribeiro Fashion: frente preta com brasão dourado e verso com campos de tamanho, código e preço">
+            <span class="work__sweep" aria-hidden="true"></span>
+            <span class="work__slats" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          </div>
+          <figcaption class="work__cap">
+            <span class="work__n">P/08</span>
+            <span class="work__cat">Tags de roupa · Frente e verso</span>
+            <h3 class="work__name">Daiane Ribeiro Fashion</h3>
+            <p class="work__desc">Marca em destaque na frente; tamanho, código e preço no verso.</p>
+          </figcaption>
+        </figure>
+
+        </div>
 
         <!-- Próximo trabalho -->
         <div class="work work--next">
@@ -731,6 +827,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-  <script src="js/main.js?v=7" defer></script>
+  <script src="js/main.js?v=8" defer></script>
 </body>
 </html>

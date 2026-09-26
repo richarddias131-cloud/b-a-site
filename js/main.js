@@ -693,7 +693,12 @@
       const cmp = el.querySelector('[data-cmp]');
       if (cmp && cmp.hint) cmp.hint();
     };
-    if ('IntersectionObserver' in window) {
+    if (hasGSAP) {
+      // Mesmo mecanismo de rolagem do resto do site (sincronizado com o Lenis)
+      works.forEach((w) => ScrollTrigger.create({
+        trigger: w, start: 'top 85%', once: true, onEnter: () => reveal(w),
+      }));
+    } else if ('IntersectionObserver' in window) {
       const io = new IntersectionObserver((entries) => {
         entries.forEach((e) => {
           if (!e.isIntersecting) return;
