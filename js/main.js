@@ -50,6 +50,7 @@
     initHeader(null);
     initMobileMenu(null);
     initServices();
+    initSegments();
     return;
   }
 
@@ -85,6 +86,7 @@
   initHero();
   initMaterials();
   initServices();
+  initSegments();
 
   /* =========================================================
      Header: fundo aparece depois de rolar
@@ -430,6 +432,141 @@
     gsap.from(list, {
       y: 70, opacity: 0, duration: 1.2, ease: 'expo.out',
       scrollTrigger: { trigger: list, start: 'top 85%', once: true },
+    });
+  }
+
+  /* =========================================================
+     04 · SEGMENTOS
+     Dados de cada segmento: nome, artigo (para a mensagem do
+     WhatsApp) e 4 aplicações [título, descrição, tag, rótulo da tag].
+     Para editar os exemplos, basta mexer aqui.
+     ========================================================= */
+  function segmentsData() { return {
+    lojas: { label: 'Lojas', one: 'loja', art: 'uma', rows: [
+      ['Fachada que vende antes da porta', 'Letreiro com presença de marca, visível do outro lado da rua.', 'acm', 'ACM'],
+      ['Vitrine adesivada', 'Promoções, horário e identidade no vidro — troca rápida a cada campanha.', 'adesivo', 'Adesivo'],
+      ['Banner de ponto de venda', 'Destaque para lançamento ou liquidação dentro da loja.', 'banner', 'Banner'],
+      ['Panfleto de oferta', 'A promoção sai da loja e vai até a casa do cliente.', 'panfleto', 'Panfleto'],
+    ] },
+    empresas: { label: 'Empresas', one: 'empresa', art: 'uma', rows: [
+      ['Logotipo em relevo na recepção', 'A primeira impressão de quem chega: marca com volume na parede.', 'pvc', 'PVC'],
+      ['Fachada e totem', 'Identificação clara da empresa para clientes, fornecedores e entregas.', 'acm', 'ACM'],
+      ['Sinalização de setores', 'Salas, departamentos e rotas no mesmo padrão visual.', 'ps', 'PS'],
+      ['Cartão de visita da equipe', 'Todo mundo com o mesmo padrão, do diretor ao comercial.', 'cartao', 'Cartão'],
+    ] },
+    escritorios: { label: 'Escritórios', one: 'escritório', art: 'um', rows: [
+      ['Logotipo atrás do balcão', 'Marca em PVC que transforma a recepção em cartão de visita.', 'pvc', 'PVC'],
+      ['Placas de porta', 'Nome da sala ou do profissional, discreto e preciso.', 'ps', 'PS'],
+      ['Adesivo no vidro', 'Privacidade e identidade nas divisórias e portas de vidro.', 'adesivo', 'Adesivo'],
+      ['Cartões de visita', 'Papel encorpado para quem fecha negócio olho no olho.', 'cartao', 'Cartão'],
+    ] },
+    clinicas: { label: 'Clínicas', one: 'clínica', art: 'uma', rows: [
+      ['Placas de consultório', 'Especialidade e profissional em cada porta, sem confusão.', 'ps', 'PS'],
+      ['Fachada da clínica', 'Confiança começa na rua: fachada limpa e bem acabada.', 'acm', 'ACM'],
+      ['Adesivo em vidros e portas', 'Recepção, sala de espera e horários sinalizados.', 'adesivo', 'Adesivo'],
+      ['Panfleto de especialidades', 'Serviços e convênios na mão do paciente.', 'panfleto', 'Panfleto'],
+    ] },
+    escolas: { label: 'Escolas', one: 'escola', art: 'uma', rows: [
+      ['Faixa de matrículas', 'Campanha de matrícula vista por quem passa na frente.', 'faixa', 'Faixa'],
+      ['Banners de eventos', 'Feira, formatura, festa junina — cada data com o seu destaque.', 'banner', 'Banner'],
+      ['Placas de sala', 'Salas, biblioteca, secretaria e rotas de saída.', 'ps', 'PS'],
+      ['Adesivos de parede', 'Ambientes mais vivos e identidade da escola nos corredores.', 'adesivo', 'Adesivo'],
+    ] },
+    condominios: { label: 'Condomínios', one: 'condomínio', art: 'um', rows: [
+      ['Identificação da fachada', 'Nome e número do condomínio com acabamento que valoriza o imóvel.', 'acm', 'ACM'],
+      ['Sinalização de garagem e áreas comuns', 'Vagas, blocos, portaria, salão e piscina.', 'ps', 'PS'],
+      ['Avisos e regras internas', 'Comunicados padronizados que os moradores realmente leem.', 'ps', 'PS'],
+      ['Numeração e adesivos', 'Apartamentos, blocos e portões identificados.', 'adesivo', 'Adesivo'],
+    ] },
+    academias: { label: 'Academias', one: 'academia', art: 'uma', rows: [
+      ['Adesivos de parede', 'Energia e identidade da marca em cada ambiente de treino.', 'adesivo', 'Adesivo'],
+      ['Fachada de impacto', 'A academia que o aluno vê de longe e lembra o nome.', 'acm', 'ACM'],
+      ['Banners de planos', 'Planos e promoções destacados na recepção.', 'banner', 'Banner'],
+      ['Panfleto de matrícula', 'Campanha de novos alunos na rua e nas redes.', 'panfleto', 'Panfleto'],
+    ] },
+    igrejas: { label: 'Igrejas', one: 'igreja', art: 'uma', rows: [
+      ['Faixas de eventos', 'Congressos, cultos especiais e campanhas anunciados na rua.', 'faixa', 'Faixa'],
+      ['Banners de campanha', 'Mensagem da campanha em destaque dentro do templo.', 'banner', 'Banner'],
+      ['Placa de fachada', 'Nome e horários de culto com acabamento duradouro.', 'acm', 'ACM'],
+      ['Panfletos e convites', 'Convite impresso para levar e entregar.', 'panfleto', 'Panfleto'],
+    ] },
+    restaurantes: { label: 'Restaurantes', one: 'restaurante', art: 'um', rows: [
+      ['Fachada que abre o apetite', 'Marca visível na rua, de dia e de noite.', 'acm', 'ACM'],
+      ['QR Code para cardápio e Pix', 'Adesivo ou display de mesa: o cliente escaneia e resolve.', 'qr', 'QR Code'],
+      ['Vitrine adesivada', 'Horário, pratos do dia e delivery direto no vidro.', 'adesivo', 'Adesivo'],
+      ['Panfleto de delivery', 'Cardápio e telefone na geladeira do cliente.', 'panfleto', 'Panfleto'],
+    ] },
+    eventos: { label: 'Eventos', one: 'evento', art: 'um', rows: [
+      ['Banners roll-up', 'Montagem rápida, visual de marca em qualquer espaço.', 'banner', 'Banner'],
+      ['Faixas de divulgação', 'Data, local e atração anunciados antes do evento.', 'faixa', 'Faixa'],
+      ['Adesivos personalizados', 'Brindes, embalagens e identificação de ambientes.', 'adesivo', 'Adesivo'],
+      ['Panfletos e programação', 'O roteiro do evento na mão do público.', 'panfleto', 'Panfleto'],
+    ] },
+  }; }
+
+  function initSegments() {
+    const root = document.querySelector('[data-segs]');
+    if (!root) return;
+    const SEGMENTS = segmentsData();
+    const board = root.querySelector('.seg-board');
+    const list = root.querySelector('[data-seg-list]');
+    const word = root.querySelector('[data-seg-word]');
+    const name = root.querySelector('[data-seg-name]');
+    const cta = root.querySelector('[data-seg-cta]');
+    const ctaLabel = root.querySelector('[data-seg-cta-label]');
+    const btns = [...root.querySelectorAll('[data-seg]')];
+    const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    let current = 'lojas';
+    let timer;
+
+    const render = (key) => {
+      const seg = SEGMENTS[key];
+      word.textContent = seg.label;
+      name.textContent = seg.label.toLowerCase();
+      list.innerHTML = seg.rows.map(([t, d, tag, tagLabel], i) =>
+        `<li class="seg-row" style="--i:${i}"><span class="seg-row__n">0${i + 1}</span>` +
+        `<div><h3>${esc(t)}</h3><p>${esc(d)}</p></div>` +
+        `<span class="seg-tag seg-tag--${tag}">${esc(tagLabel)}</span></li>`).join('');
+      ctaLabel.textContent = `Orçar para ${seg.art === 'um' ? 'meu' : 'minha'} ${seg.one}`;
+      cta.setAttribute('href', waLink(`Olá, B&A Sign! Tenho ${seg.art} ${seg.one} e quero um orçamento de comunicação visual.`));
+    };
+
+    const select = (key, btn) => {
+      if (key === current) return;
+      current = key;
+      btns.forEach((b) => {
+        const on = b === btn;
+        b.classList.toggle('is-active', on);
+        b.setAttribute('aria-pressed', String(on));
+      });
+      // Mantém o chip escolhido visível na faixa rolável do celular
+      if (!isDesktop()) {
+        const pick = btn.parentElement;
+        pick.scrollTo({ left: btn.offsetLeft - (pick.clientWidth - btn.offsetWidth) / 2, behavior: reduceMotion ? 'auto' : 'smooth' });
+      }
+
+      if (reduceMotion) { render(key); return; }
+      clearTimeout(timer);
+      board.classList.remove('is-entering');
+      board.classList.add('is-leaving');
+      timer = setTimeout(() => {
+        render(key);
+        board.classList.remove('is-leaving');
+        void board.offsetWidth;            // reinicia a animação de entrada
+        board.classList.add('is-entering');
+      }, 180);
+    };
+
+    btns.forEach((btn) => btn.addEventListener('click', () => select(btn.dataset.seg, btn)));
+
+    if (!hasGSAP || reduceMotion) return;
+    gsap.from('.segs__head > *', {
+      y: 50, opacity: 0, duration: 1.1, stagger: 0.08, ease: 'expo.out',
+      scrollTrigger: { trigger: '.segs__head', start: 'top 80%', once: true },
+    });
+    gsap.from(root, {
+      y: 70, opacity: 0, duration: 1.2, ease: 'expo.out',
+      scrollTrigger: { trigger: root, start: 'top 85%', once: true },
     });
   }
 })();

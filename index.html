@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Saira:ital,wght@1,900&family=Saira+Condensed:wght@500;700;800;900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css?v=4">
+  <link rel="stylesheet" href="css/style.css?v=5">
 
   <!-- Liga as animações de entrada só quando o JS roda e o usuário não pediu movimento reduzido.
        Se algo falhar, o conteúdo reaparece sozinho após 4s. -->
@@ -495,12 +495,50 @@
     </section>
 
     <!-- ============ 04 · SEGMENTOS ============ -->
-    <section class="section" id="segmentos" aria-labelledby="segmentos-title">
-      <header class="section__head">
-        <span class="section__index">04</span>
-        <h2 class="section__title" id="segmentos-title">Segmentos</h2>
+    <section class="section section--cut segs" id="segmentos" aria-labelledby="segmentos-title">
+      <span class="section__edge" aria-hidden="true"></span>
+
+      <header class="segs__head">
+        <span class="kicker"><b>04</b> Segmentos</span>
+        <h2 class="segs__title" id="segmentos-title">
+          <span>Seu negócio,</span>
+          <span class="is-outline">sua vitrine.</span>
+        </h2>
+        <p class="segs__lead">Escolha o seu segmento e veja onde a comunicação visual trabalha por você.</p>
       </header>
-      <p class="wip">Em construção</p>
+
+      <div class="segs__body" data-segs>
+        <!-- Seletor: lista no desktop, faixa rolável no celular -->
+        <div class="seg-pick" role="toolbar" aria-label="Escolha o segmento">
+          <button class="seg-pick__btn is-active" aria-pressed="true"  data-seg="lojas"><i>01</i>Lojas</button>
+          <button class="seg-pick__btn" aria-pressed="false" data-seg="empresas"><i>02</i>Empresas</button>
+          <button class="seg-pick__btn" aria-pressed="false" data-seg="escritorios"><i>03</i>Escritórios</button>
+          <button class="seg-pick__btn" aria-pressed="false" data-seg="clinicas"><i>04</i>Clínicas</button>
+          <button class="seg-pick__btn" aria-pressed="false" data-seg="escolas"><i>05</i>Escolas</button>
+          <button class="seg-pick__btn" aria-pressed="false" data-seg="condominios"><i>06</i>Condomínios</button>
+          <button class="seg-pick__btn" aria-pressed="false" data-seg="academias"><i>07</i>Academias</button>
+          <button class="seg-pick__btn" aria-pressed="false" data-seg="igrejas"><i>08</i>Igrejas</button>
+          <button class="seg-pick__btn" aria-pressed="false" data-seg="restaurantes"><i>09</i>Restaurantes</button>
+          <button class="seg-pick__btn" aria-pressed="false" data-seg="eventos"><i>10</i>Eventos</button>
+        </div>
+
+        <!-- Quadro de aplicações (o JS troca o conteúdo; o HTML já traz "Lojas") -->
+        <div class="seg-board" aria-live="polite">
+          <span class="seg-board__word" aria-hidden="true" data-seg-word>Lojas</span>
+          <p class="seg-board__for">Aplicações para <b data-seg-name>lojas</b></p>
+          <ol class="seg-board__list" data-seg-list>
+            <li class="seg-row" style="--i:0"><span class="seg-row__n">01</span><div><h3>Fachada que vende antes da porta</h3><p>Letreiro com presença de marca, visível do outro lado da rua.</p></div><span class="seg-tag seg-tag--acm">ACM</span></li>
+            <li class="seg-row" style="--i:1"><span class="seg-row__n">02</span><div><h3>Vitrine adesivada</h3><p>Promoções, horário e identidade no vidro — troca rápida a cada campanha.</p></div><span class="seg-tag seg-tag--adesivo">Adesivo</span></li>
+            <li class="seg-row" style="--i:2"><span class="seg-row__n">03</span><div><h3>Banner de ponto de venda</h3><p>Destaque para lançamento ou liquidação dentro da loja.</p></div><span class="seg-tag seg-tag--banner">Banner</span></li>
+            <li class="seg-row" style="--i:3"><span class="seg-row__n">04</span><div><h3>Panfleto de oferta</h3><p>A promoção sai da loja e vai até a casa do cliente.</p></div><span class="seg-tag seg-tag--panfleto">Panfleto</span></li>
+          </ol>
+          <a class="btn btn--primary seg-board__cta" data-magnetic data-wa data-seg-cta
+             data-wa-msg="Olá, B&A Sign! Tenho uma loja e quero um orçamento de comunicação visual."
+             href="https://wa.me/5535992451801" target="_blank" rel="noopener">
+            <span data-seg-cta-label>Orçar para minha loja</span>
+          </a>
+        </div>
+      </div>
     </section>
 
     <!-- ============ 05 · PROCESSO ============ -->
@@ -539,6 +577,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-  <script src="js/main.js?v=4" defer></script>
+  <script src="js/main.js?v=5" defer></script>
 </body>
 </html>
