@@ -49,6 +49,7 @@
     setReveal(1);
     initHeader(null);
     initMobileMenu(null);
+    initServices();
     return;
   }
 
@@ -83,6 +84,7 @@
   if (finePointer && !reduceMotion) initCursor();
   initHero();
   initMaterials();
+  initServices();
 
   /* =========================================================
      Header: fundo aparece depois de rolar
@@ -368,6 +370,66 @@
     gsap.from('.mats__title span, .mats__lead, .mats__head .kicker', {
       y: 50, opacity: 0, duration: 1.1, stagger: 0.08, ease: 'expo.out',
       scrollTrigger: { trigger: '.mats__head', start: 'top 80%', once: true },
+    });
+  }
+
+  /* =========================================================
+     03 · SERVIÇOS
+     Desktop: uma lâmina sempre aberta; abre ao clicar ou ao
+     parar o mouse sobre ela (pequeno atraso evita abrir tudo ao
+     atravessar a lista). Mobile: toque abre/fecha.
+     Não depende do GSAP (funciona mesmo se o CDN falhar).
+     ========================================================= */
+  function initServices() {
+    const list = document.querySelector('[data-svc]');
+    if (!list) return;
+    const items = [...list.querySelectorAll('.svc__item')];
+    const desktop = window.matchMedia('(min-width: 900px)');
+
+    const setOpen = (target) => {
+      items.forEach((item) => {
+        const open = item === target;
+        item.classList.toggle('is-open', open);
+        item.querySelector('.svc__tab').setAttribute('aria-expanded', String(open));
+      });
+      // Alturas mudam no mobile: recalcula os gatilhos de scroll depois da transição
+      if (!desktop.matches && window.ScrollTrigger) {
+        clearTimeout(setOpen.t);
+        setOpen.t = setTimeout(() => ScrollTrigger.refresh(), 600);
+      }
+    };
+
+    items.forEach((item) => {
+      const tab = item.querySelector('.svc__tab');
+      tab.addEventListener('click', () => {
+        const isOpen = item.classList.contains('is-open');
+        if (isOpen && !desktop.matches) setOpen(null);   // mobile: permite fechar tudo
+        else setOpen(item);
+      });
+
+      if (finePointer) {
+        let timer;
+        item.addEventListener('mouseenter', () => {
+          if (!desktop.matches) return;
+          timer = setTimeout(() => setOpen(item), 140);
+        });
+        item.addEventListener('mouseleave', () => clearTimeout(timer));
+      }
+    });
+
+    // Ao voltar para o desktop, garante uma lâmina aberta
+    desktop.addEventListener('change', () => {
+      if (desktop.matches && !items.some((i) => i.classList.contains('is-open'))) setOpen(items[0]);
+    });
+
+    if (!hasGSAP || reduceMotion) return;
+    gsap.from('.svcs__head > *', {
+      y: 50, opacity: 0, duration: 1.1, stagger: 0.08, ease: 'expo.out',
+      scrollTrigger: { trigger: '.svcs__head', start: 'top 80%', once: true },
+    });
+    gsap.from(list, {
+      y: 70, opacity: 0, duration: 1.2, ease: 'expo.out',
+      scrollTrigger: { trigger: list, start: 'top 85%', once: true },
     });
   }
 })();
