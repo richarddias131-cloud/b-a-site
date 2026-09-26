@@ -51,6 +51,7 @@
     initMobileMenu(null);
     initServices();
     initSegments();
+    initWorks();
     return;
   }
 
@@ -88,6 +89,7 @@
   initServices();
   initSegments();
   initProcess();
+  initWorks();
 
   /* =========================================================
      Header: fundo aparece depois de rolar
@@ -671,6 +673,91 @@
     gsap.from('.proc__intro > *', {
       y: 50, opacity: 0, duration: 1.1, stagger: 0.08, ease: 'expo.out',
       scrollTrigger: { trigger: '.proc__intro', start: 'top 80%', once: true },
+    });
+  }
+
+  /* =========================================================
+     06 · PORTFÓLIO
+     - Cada trabalho ganha .is-in ao entrar na tela (lâminas saem, 1 vez).
+     - Antes/depois: a janela do "depois" desliza para a direita e a foto
+       dentro dela desliza de volta na mesma medida (só transform).
+       Mouse: segue o cursor. Toque: arrastar. Teclado: setas (input range).
+     Não depende do GSAP.
+     ========================================================= */
+  function initWorks() {
+    const works = document.querySelectorAll('[data-work]');
+    if (!works.length) return;
+
+    const reveal = (el) => {
+      el.classList.add('is-in');
+      const cmp = el.querySelector('[data-cmp]');
+      if (cmp && cmp.hint) cmp.hint();
+    };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          reveal(e.target);
+          io.unobserve(e.target);
+        });
+      }, { threshold: 0.25 });
+      works.forEach((w) => io.observe(w));
+    } else {
+      works.forEach(reveal);
+    }
+
+    document.querySelectorAll('[data-cmp]').forEach((cmp) => {
+      const mask = cmp.querySelector('.cmp__mask');
+      const after = cmp.querySelector('.cmp__after');
+      const handle = cmp.querySelector('.cmp__handle');
+      const range = cmp.querySelector('.cmp__range');
+      const state = { p: 0.5 };
+      let dragging = false;
+      let touched = false;
+
+      const set = (p) => {
+        state.p = Math.min(0.98, Math.max(0.02, p));
+        const v = (state.p * 100).toFixed(2);
+        mask.style.transform = `translate3d(${v}%,0,0)`;
+        after.style.transform = `translate3d(${-v}%,0,0)`;
+        handle.style.transform = `translate3d(${v}%,0,0)`;
+        range.value = Math.round(state.p * 100);
+      };
+      set(0.5);
+
+      const fromEvent = (e) => {
+        const r = cmp.getBoundingClientRect();
+        set((e.clientX - r.left) / r.width);
+      };
+      const stopHint = () => { touched = true; if (hasGSAP) gsap.killTweensOf(state); };
+
+      cmp.addEventListener('pointerdown', (e) => {
+        stopHint();
+        dragging = true;
+        cmp.setPointerCapture?.(e.pointerId);
+        fromEvent(e);
+      });
+      cmp.addEventListener('pointermove', (e) => {
+        if (dragging || e.pointerType === 'mouse') { stopHint(); fromEvent(e); }
+      });
+      const end = () => { dragging = false; };
+      cmp.addEventListener('pointerup', end);
+      cmp.addEventListener('pointercancel', end);
+      range.addEventListener('input', () => { stopHint(); set(range.value / 100); });
+
+      // Dica na primeira vez que aparece: a divisória vai e volta uma vez
+      cmp.hint = () => {
+        if (!hasGSAP || reduceMotion || touched) return;
+        gsap.timeline({ delay: 0.9 })
+          .to(state, { p: 0.72, duration: 0.7, ease: 'power2.inOut', onUpdate: () => set(state.p) })
+          .to(state, { p: 0.5, duration: 0.8, ease: 'power2.inOut', onUpdate: () => set(state.p) });
+      };
+    });
+
+    if (!hasGSAP || reduceMotion) return;
+    gsap.from('.works__head > *', {
+      y: 50, opacity: 0, duration: 1.1, stagger: 0.08, ease: 'expo.out',
+      scrollTrigger: { trigger: '.works__head', start: 'top 80%', once: true },
     });
   }
 })();
