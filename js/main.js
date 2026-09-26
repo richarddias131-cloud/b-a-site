@@ -87,6 +87,7 @@
   initMaterials();
   initServices();
   initSegments();
+  initProcess();
 
   /* =========================================================
      Header: fundo aparece depois de rolar
@@ -567,6 +568,109 @@
     gsap.from(root, {
       y: 70, opacity: 0, duration: 1.2, ease: 'expo.out',
       scrollTrigger: { trigger: root, start: 'top 85%', once: true },
+    });
+  }
+
+  /* =========================================================
+     05 · PROCESSO
+     Desktop: o bloco fica fixo e a trilha desliza para a esquerda.
+     A luz fica a ~62% da largura da tela; a linha atrás dela acende
+     e cada passo liga quando a luz passa pelo seu marcador.
+     Mobile: linha vertical que enche conforme a rolagem.
+     Só transform; as classes só mudam quando um passo acende/apaga.
+     ========================================================= */
+  function initProcess() {
+    const sec = document.querySelector('.proc');
+    if (!sec || reduceMotion) return;          // sem animação: todos os passos acesos (CSS)
+    sec.classList.add('proc--js');
+
+    const steps = [...sec.querySelectorAll('.proc__step')];
+    const list = sec.querySelector('.proc__steps');
+    const line = sec.querySelector('.proc__line');
+    const fill = sec.querySelector('.proc__fill');
+    const comet = sec.querySelector('.proc__comet');
+    const light = (f, nodes) => {
+      steps.forEach((s, i) => s.classList.toggle('is-lit', f >= nodes[i]));
+    };
+
+    const mm = gsap.matchMedia();
+
+    mm.add('(min-width: 900px)', () => {
+      sec.classList.add('proc--pin');
+      const pin = sec.querySelector('.proc__pin');
+      const track = sec.querySelector('.proc__track');
+      const dist = () => Math.max(0, track.scrollWidth - window.innerWidth);
+      let listX = 0, lineW = 1, nodes = [];
+      const measure = () => {
+        listX = list.offsetLeft;
+        lineW = line.offsetWidth || 1;
+        nodes = steps.map((s) => s.offsetLeft);
+      };
+
+      const update = () => {
+        const x = -gsap.getProperty(track, 'x');                 // quanto a trilha já andou
+        const f = gsap.utils.clamp(0, lineW, x + window.innerWidth * 0.62 - listX);
+        fill.style.transform = `scaleX(${(f / lineW).toFixed(4)})`;
+        comet.style.transform = `translate3d(${f.toFixed(1)}px,0,0)`;
+        comet.classList.toggle('is-on', f > 0 && f < lineW);
+        light(f, nodes);
+      };
+
+      measure();
+      gsap.to(track, {
+        x: () => -dist(),
+        ease: 'none',
+        onUpdate: update,
+        scrollTrigger: {
+          trigger: pin,
+          start: 'top top',
+          end: () => `+=${dist()}`,
+          pin: true,
+          scrub: 0.6,
+          invalidateOnRefresh: true,
+          onRefresh: () => { measure(); update(); },
+        },
+      });
+      update();
+
+      return () => {
+        sec.classList.remove('proc--pin');
+        fill.style.transform = '';
+        comet.style.transform = '';
+      };
+    });
+
+    mm.add('(max-width: 899px)', () => {
+      let lineH = 1, lineTop = 0, nodes = [];
+      const measure = () => {
+        lineTop = line.offsetTop;
+        lineH = line.offsetHeight || 1;
+        nodes = steps.map((s) => s.offsetTop - lineTop);
+      };
+      measure();
+      gsap.fromTo(fill, { scaleY: 0 }, {
+        scaleY: 1,
+        ease: 'none',
+        onUpdate: () => {
+          const f = gsap.getProperty(fill, 'scaleY') * lineH;
+          comet.style.transform = `translate3d(0,${f.toFixed(1)}px,0)`;
+          comet.classList.toggle('is-on', f > 0 && f < lineH);
+          light(f, nodes);
+        },
+        scrollTrigger: {
+          trigger: list,
+          start: 'top 65%',
+          end: 'bottom 65%',
+          scrub: 0.4,
+          onRefresh: measure,
+        },
+      });
+      return () => { comet.style.transform = ''; };
+    });
+
+    gsap.from('.proc__intro > *', {
+      y: 50, opacity: 0, duration: 1.1, stagger: 0.08, ease: 'expo.out',
+      scrollTrigger: { trigger: '.proc__intro', start: 'top 80%', once: true },
     });
   }
 })();

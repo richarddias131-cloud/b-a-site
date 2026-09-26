@@ -2068,6 +2068,187 @@ html.lenis, html.lenis body { height: auto; }
   .seg-row .seg-tag { grid-column: 3; grid-row: 1; margin: 0; }
 }
 
+/* =========================================================
+   05 · PROCESSO
+   Base (mobile / sem JS): linha do tempo vertical.
+   .proc--pin (desktop, via JS): bloco fixo, trilha desliza na horizontal
+   e a luz percorre a linha. Tudo em transform.
+   ========================================================= */
+.proc { padding-bottom: clamp(5rem, 12vw, 9rem); }
+.proc__track { position: relative; }
+.proc__title {
+  margin-top: 1.2rem;
+  font-family: var(--f-head);
+  font-weight: 800;
+  font-size: clamp(3rem, 13vw, 8.5rem);
+  line-height: .86;
+  text-transform: uppercase;
+}
+.proc__title span { display: block; }
+.proc__title span:first-child {
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-image: var(--grad-chrome);
+}
+.proc__lead { max-width: 34ch; margin-top: 1.6rem; color: var(--muted); }
+.proc__hint { display: none; }
+
+.proc__steps {
+  position: relative;
+  margin: 3.5rem 0 0;
+  padding: 0 0 0 2.8rem;
+  list-style: none;
+}
+.proc__line {
+  position: absolute;
+  left: .6rem; top: .9rem; bottom: 2.4rem;
+  width: 2px;
+  background: var(--line);
+}
+.proc__fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--cyan), var(--blue) 35%, var(--pink-2) 70%, var(--pink));
+  box-shadow: 0 0 10px rgba(0, 194, 255, .55);
+  transform-origin: top;
+}
+.proc__comet {
+  position: absolute;
+  left: 50%; top: 0;
+  width: 12px; height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px 3px rgba(0, 194, 255, .85), 0 0 26px 6px rgba(255, 61, 154, .35);
+  opacity: 0;
+  transition: opacity .3s;
+}
+.proc__comet.is-on { opacity: 1; }
+
+.proc__step { position: relative; padding-bottom: 3.2rem; }
+.proc__node {
+  position: absolute;
+  left: calc(-2.8rem + .6rem + 1px - 8px);
+  top: .55rem;
+  width: 16px; height: 16px;
+  background: var(--bg);
+  border: 2px solid var(--chrome-4);
+  transform: rotate(45deg);
+  transition: background-color .4s, border-color .4s, box-shadow .4s;
+}
+.proc__num {
+  display: block;
+  font-family: var(--f-logo);
+  font-weight: 900;
+  font-size: 2.6rem;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--chrome-4);
+  transition: -webkit-text-stroke-color .4s;
+}
+.proc__name {
+  margin-top: .6rem;
+  font-family: var(--f-head);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 11vw, 4.4rem);
+  line-height: .9;
+  text-transform: uppercase;
+  color: var(--chrome-3);
+  transition: color .4s;
+}
+.proc__desc { margin-top: .9rem; max-width: 34ch; color: var(--muted); }
+.proc__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.proc__tags li {
+  padding: .55em .8em;
+  font-family: var(--f-logo);
+  font-size: .54rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--chrome-2);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--c);
+}
+
+/* Passo aceso (sem JS: todos acesos) */
+.proc:not(.proc--js) .proc__step .proc__node,
+.proc__step.is-lit .proc__node {
+  background: var(--c);
+  border-color: var(--c);
+  box-shadow: 0 0 14px var(--c);
+}
+.proc:not(.proc--js) .proc__step .proc__num,
+.proc__step.is-lit .proc__num { -webkit-text-stroke-color: var(--c); }
+.proc:not(.proc--js) .proc__step .proc__name,
+.proc__step.is-lit .proc__name { color: #fff; }
+
+.proc__end { padding-left: 2.8rem; }
+.proc__end-text {
+  font-family: var(--f-head);
+  font-weight: 700;
+  font-size: 1.8rem;
+  line-height: 1;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+.proc__end-text b { color: var(--cyan); }
+
+/* ---------- Desktop: trilha horizontal fixa ---------- */
+.proc--pin { padding: var(--cut) 0 0; }
+.proc--pin .proc__pin {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.proc--pin .proc__track {
+  display: flex;
+  align-items: center;
+  gap: 7vw;
+  width: max-content;
+  padding: var(--header-h) var(--gutter) 0;
+  will-change: transform;
+}
+.proc--pin .proc__intro { flex: none; width: min(36rem, 40vw); }
+.proc--pin .proc__title { font-size: clamp(4rem, 7.4vw, 8rem); }
+.proc--pin .proc__hint {
+  display: inline-block;
+  margin-top: 2rem;
+  font-family: var(--f-logo);
+  font-size: .6rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--chrome-3);
+}
+.proc--pin .proc__steps {
+  display: flex;
+  gap: 5vw;
+  margin: 0;
+  padding: 6rem 0 0;
+}
+.proc--pin .proc__line {
+  left: 0; right: 0;
+  top: 1.5rem; bottom: auto;
+  width: auto; height: 2px;
+}
+.proc--pin .proc__fill {
+  background: linear-gradient(90deg, var(--cyan), var(--blue) 35%, var(--pink-2) 70%, var(--pink));
+  transform-origin: left;
+  transform: scaleX(0);
+}
+.proc--pin .proc__comet { left: 0; top: 50%; margin: -6px 0 0 -6px; }
+.proc--pin .proc__step { flex: none; width: min(25rem, 28vw); padding: 0; }
+.proc--pin .proc__node { left: -7px; top: calc(1.5rem - 6rem - 7px); }
+.proc--pin .proc__name { font-size: clamp(3rem, 4.6vw, 5rem); }
+.proc--pin .proc__end { flex: none; width: min(24rem, 30vw); padding: 6rem 0 0; }
+
 /* ---------- Movimento reduzido ---------- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
